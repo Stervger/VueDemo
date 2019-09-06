@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .red{
+            color: red;
+        }
+        .thin{
+            font-weight: 200;
+        }
+        .italic{
+            font-style: italic;
+        }
+        .active{
+            letter-spacing: 0.5em;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!--<h1 class="red thin">这是一个h1</h1>-->
+
+        <!--直接传递一个数组，使用v-bind绑定-->
+        <!--<h1 :class="['thin','red']">这是一个h1</h1>-->
+
+        <!--在数据中使用三元表达式-->
+        <!--<h1 :class="['red','thin',flag?'active':'']">这是一个h1</h1>-->
+
+
+        <!--这是在数组中使用对象代替三元表达式-->
+        <!--<h1 :class="['thin','red',{'active':flag}]">这是一个h1</h1>-->
+
+        <!--在给class使用v-bind绑定对象的时候，对象的属性是类名-->
+        <h1 :class="classobj">这是一个h1</h1>
+
+
+
+
+    </div>
+
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: true,
+                classobj: {red:true,thin:true,italic:false}
+            },
+            methods: {}
+        })
+    </script>
+</body>
+</html>
