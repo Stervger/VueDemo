@@ -1,0 +1,75 @@
+ll        :查找当前目录下资源；
+ls -lA	  :查找隐藏资源；
+ls -l|less:分屏查看；
+cd +文件名:进入改目录；
+mkdir     :新建目录；
+git init  :初始化本地仓库
+
+git congif use.name 用户名(仅在当前库有效)
+git config user.email 邮箱(仅在当前库有效)
+
+git config --global use.name 用户名(系统用户级)
+git config --global user.email 邮箱(系统用户级)
+
+git status:查看本地仓情况
+git add +文件 	    :添加到暂存区
+git add -A.          表示添加所有内容， 
+git add.             表示添加新文件和编辑过的文件不包括删除的文件; 
+git add -u.          表示添加编辑或者删除的文件，不包括新添加的文件
+git rm --cached 文件:从暂存区移除
+git commit  文件    :提交到本地库
+git commit -m "commit message" 不加文件名，提交全部
+git commit -m "commit message" 文件名
+git log --pretty=oneline 显示提交日志
+git reflog  显示版本移动步数
+git reset --hard +要回溯或者前进到版本的hash索引值
+（soft：仅在本地库移动head指针）
+（mix ：在本地库移动head指针，重置暂存区）
+（hard：在本地库移动head指针，重置暂存区，重置工作区）
+
+删除文件找回：
+前提：删除前，文件存在时的状态提交到了本地库
+操作：git reset --hard+指针位置
+删除操作已经提交：指针位置指向历史记录
+删除操作尚未提交：指针位置使用head
+
+git diff 文件名:比较文件差异 （将工作区文件与暂存区文件进行比较）
+git diff 本地库中的历史版本 文件名（将工作区的文件和本地库的历史记录比较）
+git diff 不带文件名 （比较多个文件）
+
+git branch 分支名    :创建分支
+git checkout 分支名  :切换分支
+合并分支：
+	第一步：切换到接受修改的分支（被合并，增加新内容）上
+	第二步：执行merge
+git merge 分支名  （将有新内容的该分支调价到当前分支）
+	
+git remote add 本地别名 远程仓库地址   （在本地仓库创建远程仓库别名）
+git push 本地仓库别名 要推送的分支名
+git pull 本地仓库别名 要抓取的分支名    （pull=fetch+merge）
+git fetch 本地仓库别名 要抓取的分支名
+git merge 本地仓库别名 要抓取的分支名
+git clone 远程仓库下载地址（完整的把远程库下载到本地、创建远程地址别名、初始化本地库）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vm编辑器:i进入编辑模式；esc :wq写入退出
+
