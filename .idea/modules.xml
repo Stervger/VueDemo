@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Vuedemo.iml" filepath="$PROJECT_DIR$/.idea/Vuedemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vue_demo.iml" filepath="$PROJECT_DIR$/.idea/vue_demo.iml" />
     </modules>
   </component>
 </project>
