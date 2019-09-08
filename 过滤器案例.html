@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>
+            {{msg | msgFormat('短','高') | test}}
+        </p>
+    </div>
+
+    <script>
+        //定义一个过滤器
+        Vue.filter('msgFormat',function (msg,arg,arg2) {
+            //字符串replace第一个参数可以写字符串也可以写正则
+            return msg.replace(/发/g,arg + arg2)
+        });
+
+        Vue.filter('test',function (msg) {
+            return msg + '====='
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '短发发奋图强发送方发恶法方为人'
+            },
+            methods : {}
+        })
+    </script>
+</body>
+</html>
