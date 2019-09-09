@@ -8,123 +8,164 @@
 </head>
 <body>
 
-    <div id="app">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">添加品牌</h3>
-            </div>
-            <div class="panel-body form-inline">
-                <label>
-                    Id:
-                    <input type="text" class="form-control" v-model="id">
-                </label>
-
-                <label>
-                    Name:
-                    <input type="text" class="form-control" v-model="name">
-                </label>
-
-                <input type="button" value="添加" class="btn btn-primary" @click="add">
-
-                <label>
-                    搜索名称关键字
-                    <input type="text" class="form-control" v-model="keywords">
-                </label>
-            </div>
+<div id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加品牌</h3>
         </div>
+        <div class="panel-body form-inline">
+            <label>
+                Id:
+                <input type="text" class="form-control" v-model="id">
+            </label>
 
-        <table class="table table-bordered table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Ctime</th>
-                    <th>Operation</th>
-                </tr>
-            </thead>
-            <tbody>
-            <!--之前v-for的数据是直接从data取-->
-            <!--下载，自定义search方法，把关键字传递给search-->
-            <!--在search内部执行for循环，把所有符合关键字的数据保存到新数组中-->
-                <tr v-for="item in search(keywords)" :key="item.id">
-                    <td>{{item.id}}</td>
-                    <td v-text="item.name"></td>
-                    <td>{{item.ctime}}</td>
-                    <td>
-                        <a href="" @click.prevent="del(item.id)">删除</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <label>
+                Name:
+                <input type="text" class="form-control" v-model="name">
+            </label>
+
+            <input type="button" value="添加" class="btn btn-primary" @click="add">
+
+            <label>
+                搜索名称关键字
+                <input type="text" class="form-control" v-model="keywords">
+            </label>
+        </div>
     </div>
 
-    <script>
-        var vm = new Vue({
-            el : '#app',
-            data : {
-                id:'',
-                name:'',
-                keywords:'',
-                list :[
-                    { id: 1,name:'奔驰', ctime: new Date()},
-                    { id: 2,name:'宝马', ctime: new Date()},
-                ]
-            },
-            methods :{
-                add() {
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Ctime</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--之前v-for的数据是直接从data取-->
+        <!--下载，自定义search方法，把关键字传递给search-->
+        <!--在search内部执行for循环，把所有符合关键字的数据保存到新数组中-->
+        <tr v-for="item in search(keywords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td v-text="item.name"></td>
+            <td>{{item.ctime | dateFormat('')}}</td>
+            <td>
+                <a href="" @click.prevent="del(item.id)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    //全局过滤器，进行时间格式化
+    Vue.filter('dateFormat', function (dateStr, pattern = "") {
+        //根据给定的时间字符串，得到特定的时间
+        var dt = new Date(dateStr);
+        // yyyy-mm-dd
+        var y = dt.getFullYear();
+        var m = dt.getMonth() + 1;
+        var d = dt.getDate();
+
+        if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+            return `${y}-${m}-${d}`;
+        } else {
+            var hh = dt.getHours();
+            var mm = dt.getMinutes();
+            var ss = dt.getSeconds();
+
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss} `;
+        }
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            keywords: '',
+            list: [
+                {id: 1, name: '奔驰', ctime: new Date()},
+                {id: 2, name: '宝马', ctime: new Date()},
+            ]
+        },
+        methods: {
+            add() {
                 //    1、获取到id和name，直接从data获取
                 //    2、组织出一个对象
                 //    3、把这个对象添加到当前data的list中
-                var car = {id:this.id,name:this.name,ctime:new Date()};
+                var car = {id: this.id, name: this.name, ctime: new Date()};
                 this.list.push(car);
                 this.id = this.name = ''
-                },
-                del(id){//根据id删除数据
+            },
+            del(id) {//根据id删除数据
                 //    1、如何根据id找到要删除这一项的索引
                 //    2、直接调用数组 的splice
 
-                    /*this.list.some((item,i)=>{
-                        if (item.id ==id){
-                            this.list.splice(i,1);
-                            //在数组的some方法中，return tures，就会立即终止后续循环
-                            return true;
-                        }
-                    })*/
+                /*this.list.some((item,i)=>{
+                    if (item.id ==id){
+                        this.list.splice(i,1);
+                        //在数组的some方法中，return tures，就会立即终止后续循环
+                        return true;
+                    }
+                })*/
 
 
-                    var index =  this.list.findIndex(item =>{
-                        if (item.id == id){
-                            return true;
-                        }
-                    });
-                    this.list.splice(index,1)
-                },
-                search(keywords){//关键字数据搜索
-                   /* var newList = [];
-                    this.list.forEach(item => {
-                        if (item.name.indexOf(keywords) != -1) {
-                            newList.push(item)
-                        }
-                    });
-                    return newList*/
+                var index = this.list.findIndex(item => {
+                    if (item.id == id) {
+                        return true;
+                    }
+                });
+                this.list.splice(index, 1)
+            },
+            search(keywords) {//关键字数据搜索
+                /* var newList = [];
+                 this.list.forEach(item => {
+                     if (item.name.indexOf(keywords) != -1) {
+                         newList.push(item)
+                     }
+                 });
+                 return newList*/
 
-                   return this.list.filter(item => {
-                       //String.prototype.includes('要包含的字符串')
-                       //如果包含返回true，否则返回false
-                       if (item.name.includes(keywords)){
-                            return item
-                       }
-                   })
-                }
+                return this.list.filter(item => {
+                    //String.prototype.includes('要包含的字符串')
+                    //如果包含返回true，否则返回false
+                    if (item.name.includes(keywords)) {
+                        return item
+                    }
+                })
             }
-        });
-        <!--过滤器调用时候的格式  {{name | 过滤器名称}}-->
-        <!--Vue.filter('过滤器名称',function(){})-->
-        //过滤器function中的第一个参数永远是要过滤的参数
-        Vue.filter('过滤器名称',function(data){
-            return data + '123'
-        })
-    </script>
+        },
+        /* filters :{//私有过滤器
+             dateFormat:function (dateStr,pattern='') {
+                 //根据给定的时间字符串，得到特定的时间
+                 //过滤器调用采用就近原则
+                 var dt = new Date(dateStr);
+                 // yyyy-mm-dd
+                 var y = dt.getFullYear();
+                 var m = dt.getMonth() + 1;
+                 var d = dt.getDate();
+
+                 if (pattern.toLowerCase() === 'yyyy-mm-dd'){
+                     return `${y}-${m}-${d}`;
+                 }else {
+                     var hh = dt.getHours();
+                     var mm = dt.getMinutes();
+                     var ss = dt.getSeconds();
+
+                     return `${y}-${m}-${d} ${hh}:${mm}:${ss} `;
+                 }
+             }
+         }*/
+    });
+    <!--过滤器调用时候的格式  {{name | 过滤器名称}}-->
+    <!--Vue.filter('过滤器名称',function(){})-->
+    //过滤器function中的第一个参数永远是要过滤的参数
+    Vue.filter('过滤器名称', function (data) {
+        return data + '123'
+    })
+</script>
 
 </body>
 </html>
