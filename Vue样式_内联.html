@@ -8,14 +8,15 @@
 <body>
         <div id="app">
             <!--对象就是无序键值对集合-->
-            <h1 :style="styleobj1">这是一个h1</h1>
+            <h1 :style="[styleobj1,styleobj2]">这是一个h1</h1>
         </div>
 
         <script>
             var vm = new Vue({
                 el: '#app',
                 data: {
-                    styleobj1: {color:'red','font-weight':200}
+                    styleobj1: {color:'red','font-weight':200},
+                    styleobj2: {'font-style':'italic'}
                 },
                 methods: {}
             })
