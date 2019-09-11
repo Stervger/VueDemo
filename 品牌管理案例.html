@@ -29,7 +29,7 @@
             <label>
                 搜索名称关键字:
                 <!--Vue中所有指令在调用时都用v-开头-->
-                <input type="text" class="form-control" v-model="keywords" v-focus>
+                <input type="text" class="form-control" v-model="keywords" v-focus v-color="'green'" v-fontweight="900">
             </label>
         </div>
     </div>
@@ -72,11 +72,20 @@
             //一个元素只有插入DOM之后才能获取焦点
             // el.focus()
         },
-        inserted:function (el) {//表示元素插入到DOM中，会执行该函数，执行一次
+        inserted:function (el) {//表示元素插入到DOM中，会执行该函数，执行一次，和js行为有关的在inserted中执行
             el.focus()
         },
         updated:function () {//当Vnode更新时会执行updateed可能会执行多次
 
+        }
+    });
+
+    Vue.directive('color',{
+        bind:function (el,binding) {//和样式相关的在bind中执行
+            //样式只要通过指令绑定给了元素，不论是否被插入到页面中，这个元素可定有一个内联样式
+            // el.style.color = 'red'
+
+            el.style.color = binding.value
         }
     });
 
@@ -99,7 +108,7 @@
             var mm = dt.getMinutes().toString().padStart(2,'0');
             var ss = dt.getSeconds().toString().padStart(2,'0');
 
-            return `${y}-${m}-${d} ${hh}:${mm}:${ss} `;
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
         }
     });
 
@@ -181,7 +190,14 @@
                      return `${y}-${m}-${d} ${hh}:${mm}:${ss} `;
                  }
              }
-         }*/
+         },*/
+        directives: {//定义私有指令
+            'fontweight' : {
+                bind:function (el,binding) {
+                    el.style.fontWeight = binding.value
+                }
+            }
+        }
     });
     <!--过滤器调用时候的格式  {{name | 过滤器名称}}-->
     <!--Vue.filter('过滤器名称',function(){})-->
